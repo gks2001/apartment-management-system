@@ -1,3 +1,7 @@
+import sys
+import os
+import shutil
+
 class User: 
     def __init__(self, username, usertype):
         self.username = username
@@ -8,23 +12,24 @@ class User:
 
 class Admin(User):
     def __init__(self, username):
-        self.adminname = username
-        self.usertype = "admin"
+        User.__init__(self, username, "admin")
         self.privilege = 3
     
     def printdetails(self):
-        print("\nAdmin Name: " + self.adminname + "\nUsertype: " + self.usertype)
+        print("\nAdmin Name: " + self.username + "\nUsertype: " + self.usertype)
 
     def backup(self):
         def cloud_backup(self):
             pass
         
         def physical_backup(self):
-            pass
+            bkp_location = input("Enter path for storing the backup: ")
+            shutil.copy("D:\\AMS\\1.txt", bkp_location)
+            print("Back up was successfull!")
     
     def mod_user(self, user):
         def add_user(self):
-            pass
+            addusers()
 
         def del_user(self, user):
             pass
@@ -34,13 +39,12 @@ class Admin(User):
 
 class Vendor(User):
     def __init__(self, username, ven_id = -1):
-        self.vendorname = username
+        User.__init__(self, username, "vendor")
         self.vendorid = ven_id
-        self.usertype = "vendor"
         self.privilege = 1
 
     def printdetails(self):
-        print("\nVendor Name: " + self.vendorname + "\nVendor ID: " + self.vendorid + "\nUsertype: " + self.usertype)
+        print("\nVendor Name: " + self.username + "\nVendor ID: " + self.vendorid + "\nUsertype: " + self.usertype)
 
     def perform_service(self):
         pass
@@ -50,13 +54,12 @@ class Vendor(User):
 
 class Employee(User):
     def __init__(self, username, emp_id = -1):
-        self.employeename = username
+        User.__init__(self, username, "employee")
         self.employeeid = emp_id
-        self.usertype = "employee"
         self.privilege = 1
 
     def printdetails(self):
-        print("\nEmployee Name: " + self.employeename + "\nEmployee ID: " + self.employeeid + "\nUsertype: " + self.usertype)
+        print("\nEmployee Name: " + self.username + "\nEmployee ID: " + self.employeeid + "\nUsertype: " + self.usertype)
 
     def fill_timecard(self):
         pass
@@ -66,13 +69,12 @@ class Employee(User):
 
 class Owner(User):
     def __init__(self, username, apt = -1):
-        self.ownername = username
+        User.__init__(self, username, "owner")
         self.aptno = apt
-        self.usertype = "owner"
         self.privilege = 2
 
     def printdetails(self):
-        print("\nOwner Name: " + self.ownername + "\nApartment Number: " + self.aptno + "\nUsertype: " + self.usertype)
+        print("\nOwner Name: " + self.username + "\nApartment Number: " + self.aptno + "\nUsertype: " + self.usertype)
 
     def paydues(self):
         def paynow(amt):
@@ -90,13 +92,12 @@ class Owner(User):
 
 class Resident(User):
     def __init__(self, username, apt = -1):
-        self.residentname = username
+        User.__init__(self, username, "resident")
         self.aptno = apt
-        self.usertype = "resident"
         self.privilege = 2
 
     def printdetails(self):
-        print("\nResident Name: " + self.residentname + "\nApartment Number: " + str(self.aptno) + "\nUsertype: " + self.usertype)
+        print("\nResident Name: " + self.username + "\nApartment Number: " + str(self.aptno) + "\nUsertype: " + self.usertype)
 
     def paydues(self):
         def paynow(amt):
@@ -114,12 +115,11 @@ class Resident(User):
 
 class Treasurer(User):
     def __init__(self, username):
-        self.treasurername = username
-        self.usertype = "treasurer"
+        User.__init__(self, username, "treasurer")
         self.privilege = 3
 
     def printdetails(self):
-        print("\nTreasurer Name: " + self.treasurername + "\nUsertype: " + self.usertype)
+        print("\nTreasurer Name: " + self.username + "\nUsertype: " + self.usertype)
     
     def generate_incomereport(self):
         pass
@@ -141,29 +141,41 @@ class Treasurer(User):
         def collect_dues(self, res_own):
             pass
 
-n = int(input("Enter number of users: "))
+def addusers():
+    for x in range(0,n):
+        name = input("Enter user name: ")
+        type1 = input("Enter your user type: ")
+        
+        if type1 == "admin":
+            userlist.append(Admin(name))
+        if type1 == "resident":
+            apt = int(input("Enter apartment number: "))
+            userlist.append(Resident(name,apt))
+        if type1 == "owner":
+            apt = input("Enter apartment number: ")
+            userlist.append(Owner(name,apt))
+        if type1 == "vendor":
+            vid = input("Enter vendor id: ")
+            userlist.append(Vendor(name,vid))
+        if type1 == "employee":
+            eid = input("Enter employee id: ")
+            userlist.append(Employee(name,eid))
+        if type1 == "treasurer":
+            userlist.append(Treasurer(name))
+
+def displayallusers():
+    for x in userlist:
+        x.printdetails()
+
 userlist = []
-
-for x in range(0,n):
-    name = input("Enter user name: ")
-    type1 = input("Enter your user type: ")
-    
-    if type1 == "admin":
-        userlist.append(Admin(name))
-    if type1 == "resident":
-        apt = int(input("Enter apartment number: "))
-        userlist.append(Resident(name,apt))
-    if type1 == "owner":
-        apt = input("Enter apartment number: ")
-        userlist.append(Owner(name,apt))
-    if type1 == "vendor":
-        vid = input("Enter vendor id: ")
-        userlist.append(Vendor(name,vid))
-    if type1 == "employee":
-        eid = input("Enter employee id: ")
-        userlist.append(Employee(name,eid))
-    if type1 == "treasurer":
-        userlist.append(Treasurer(name))
-
-for x in userlist:
-    x.printdetails()
+selection = -1
+while(selection != 0):
+    print("1.Add user\n2.Display users\n3.Backup\n0.Exit")
+    selection = int(input("Enter your choice: "))
+    if selection == 0:
+        sys.exit
+    if selection == 1:
+        n = int(input("Enter number of users: "))
+        addusers()
+    if selection == 2:
+        displayallusers()
