@@ -19,13 +19,20 @@ class Admin(User):
         print("\nAdmin Name: " + self.username + "\nUsertype: " + self.usertype)
 
     def backup(self):
-        def cloud_backup(self):
-            pass
-        
-        def physical_backup(self):
-            bkp_location = input("Enter path for storing the backup: ")
-            shutil.copy("D:\\AMS\\1.txt", bkp_location)
-            print("Back up was successfull!")
+        bkp_fileloc = "D:\\AMS\\1.txt"
+        bkp_choice = int(input("cloud or physical (0/1): "))
+        if bkp_choice == 0:
+            a1.cloud_backup(bkp_fileloc)
+        if bkp_choice == 1: 
+            a1.physical_backup(bkp_fileloc)
+            
+    def cloud_backup(self, bkp_fileloc):
+        pass
+    
+    def physical_backup(self, bkp_fileloc):
+        bkp_location = input("Enter path for storing the backup: ")
+        shutil.copy(bkp_fileloc, bkp_location)
+        print("Back up (physical) was successfull!")
     
     def mod_user(self, user):
         def add_user(self):
@@ -167,6 +174,8 @@ def displayallusers():
     for x in userlist:
         x.printdetails()
 
+# Testing purpoese ....
+
 userlist = []
 selection = -1
 while(selection != 0):
@@ -179,3 +188,6 @@ while(selection != 0):
         addusers()
     if selection == 2:
         displayallusers()
+    if selection == 3:
+        a1 = Admin("admin1")
+        a1.backup()
