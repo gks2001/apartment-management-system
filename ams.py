@@ -1,6 +1,10 @@
 import sys
 import os
 import shutil
+import sqlite3
+
+conn = sqlite3.connect('apt.db')
+c = conn.cursor()
 
 class User: 
     def __init__(self, username, usertype):
@@ -19,12 +23,12 @@ class Admin(User):
         print("\nAdmin Name: " + self.username + "\nUsertype: " + self.usertype)
 
     def backup(self):
-        bkp_fileloc = "D:\\AMS\\1.txt"
+        bkp_fileloc = "D:\\AMS\\apt.db"
         bkp_choice = int(input("cloud or physical (0/1): "))
         if bkp_choice == 0:
             a1.cloud_backup(bkp_fileloc)
         if bkp_choice == 1: 
-            a1.physical_backup(bkp_fileloc)
+            self.physical_backup(bkp_fileloc)
             
     def cloud_backup(self, bkp_fileloc):
         pass
@@ -34,15 +38,45 @@ class Admin(User):
         shutil.copy(bkp_fileloc, bkp_location)
         print("Back up (physical) was successfull!")
     
-    def mod_user(self, user):
-        def add_user(self):
-            addusers()
+    def mod_user(self):
+        print("1.add user\n2.del user\n3.update user")
+        mu_choice = int(input("Enter your choice: "))
+        if mu_choice == 1:
+            n = int(input("Enter number of users: "))
+            addusers(n)
+        if mu_choice == 2:
+            self.del_user()
+        if mu_choice == 3:
+            self.upd_user()
 
-        def del_user(self, user):
-            pass
+    def del_user(self):
+        del_username = input("Enter username of user to be deleted: ")
+        for i in userlist:
+            if i.username == del_username:
+                userlist.remove(i)
+                print("The user has been deleted!")
+                break
 
-        def upd_user(self, user):
-            pass
+    def upd_user(self):
+        upd_username = input("Enter username of user to be updated: ")
+        for i in userlist:
+            if i.username == upd_username:
+                if i.usertype == "admin":
+                    i.username = input("Enter name: ")
+                if i.usertype == "treasurer":
+                    i.username = input("Enter name: ")
+                if i.usertype == "owner":
+                    i.username = input("Enter name: ")
+                    i.aptno = input("Enter apartment number: ")
+                if i.username == "resident":
+                    i.username = input("Enter name: ")
+                    i.aptno = input("Enter apartment number: ")
+                if i.usertype == "vendor":
+                    i.username = input("Enter name: ")
+                    i.vendorid = input("Enter vendor id: ")
+                if i.usertype == "employee":
+                    i.username = input("Enter name: ")
+                    i.employeeid = input("Enter employee id: ")
 
 class Vendor(User):
     def __init__(self, username, ven_id = -1):
@@ -54,9 +88,11 @@ class Vendor(User):
         print("\nVendor Name: " + self.username + "\nVendor ID: " + self.vendorid + "\nUsertype: " + self.usertype)
 
     def perform_service(self):
-        pass
+        service_name = ("Enter the service name: ")
+        service_cost = ("Enter the payment amount: ")
+        get_payment(service_name, service_cost)
 
-    def get_payment(self):
+    def get_payment(self, service_name, service_cost):
         pass
 
 class Employee(User):
@@ -69,9 +105,11 @@ class Employee(User):
         print("\nEmployee Name: " + self.username + "\nEmployee ID: " + self.employeeid + "\nUsertype: " + self.usertype)
 
     def fill_timecard(self):
-        pass
+        days = input("How many days have the employee worked this month: ")
+        emp_sal = 300 * days
+        get_salary(self, emp_sal)
 
-    def get_salary(self):
+    def get_salary(self, emp_sal):
         pass
 
 class Owner(User):
@@ -148,7 +186,7 @@ class Treasurer(User):
         def collect_dues(self, res_own):
             pass
 
-def addusers():
+def addusers(n):
     for x in range(0,n):
         name = input("Enter user name: ")
         type1 = input("Enter your user type: ")
@@ -174,20 +212,23 @@ def displayallusers():
     for x in userlist:
         x.printdetails()
 
-# Testing purpoese ....
+# Testing purpose ....
 
 userlist = []
 selection = -1
 while(selection != 0):
-    print("1.Add user\n2.Display users\n3.Backup\n0.Exit")
+    print("1.Add user\n2.Display users\n3.Backup\n4.Admin moduser\n0.Exit")
     selection = int(input("Enter your choice: "))
     if selection == 0:
         sys.exit
     if selection == 1:
         n = int(input("Enter number of users: "))
-        addusers()
+        addusers(n)
     if selection == 2:
         displayallusers()
     if selection == 3:
         a1 = Admin("admin1")
         a1.backup()
+    if selection == 4:
+        a1 = Admin("admin1")
+        a1.mod_user()
