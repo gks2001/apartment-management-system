@@ -5,6 +5,9 @@ import sqlite3
 
 conn = sqlite3.connect('apt.db')
 c = conn.cursor()
+# c.execute("CREATE TABLE apt_tran (months integer, dates integer, years integer, details text, amt real, c_d text)")
+# c.execute("CREATE TABLE apt_def (aptno integer, months integer, years integer,details text, paid text)")
+conn.commit()
 
 class User: 
     def __init__(self, username, usertype):
@@ -31,6 +34,7 @@ class Admin(User):
             self.physical_backup(bkp_fileloc)
             
     def cloud_backup(self, bkp_fileloc):
+        # google drive api ???
         pass
     
     def physical_backup(self, bkp_fileloc):
@@ -68,7 +72,7 @@ class Admin(User):
                 if i.usertype == "owner":
                     i.username = input("Enter name: ")
                     i.aptno = input("Enter apartment number: ")
-                if i.username == "resident":
+                if i.usertype == "resident":
                     i.username = input("Enter name: ")
                     i.aptno = input("Enter apartment number: ")
                 if i.usertype == "vendor":
@@ -77,6 +81,7 @@ class Admin(User):
                 if i.usertype == "employee":
                     i.username = input("Enter name: ")
                     i.employeeid = input("Enter employee id: ")
+        print("The user has been updated!")  
 
 class Vendor(User):
     def __init__(self, username, ven_id = -1):
@@ -88,12 +93,17 @@ class Vendor(User):
         print("\nVendor Name: " + self.username + "\nVendor ID: " + self.vendorid + "\nUsertype: " + self.usertype)
 
     def perform_service(self):
-        service_name = ("Enter the service name: ")
-        service_cost = ("Enter the payment amount: ")
-        get_payment(service_name, service_cost)
+        service_name = input("Enter the service name: ")
+        service_cost = float(input("Enter the payment amount: "))
+        date = input("Enter date: ")
+        da = date.split("/", -1)
+        mon = da[0]
+        dat = da[1]
+        yea = da[2]
+        self.get_payment(service_name, service_cost, mon, dat, yea)
 
-    def get_payment(self, service_name, service_cost):
-        pass
+    def get_payment(self, service_name, service_cost, mon, dat, yea):
+        Treasurer.pay_vendor(self.username, self.vendorid, service_name, service_cost, mon, dat, yea)
 
 class Employee(User):
     def __init__(self, username, emp_id = -1):
@@ -105,58 +115,105 @@ class Employee(User):
         print("\nEmployee Name: " + self.username + "\nEmployee ID: " + self.employeeid + "\nUsertype: " + self.usertype)
 
     def fill_timecard(self):
-        days = input("How many days have the employee worked this month: ")
+        date = input("Enter date: ")
+        da = date.split("/", -1)
+        mon = da[0]
+        dat = da[1]
+        yea = da[2]
+        days = int(input("How many days have the employee worked this month: "))
         emp_sal = 300 * days
-        get_salary(self, emp_sal)
+        self.get_salary(emp_sal, mon, dat, yea)
 
-    def get_salary(self, emp_sal):
-        pass
+    def get_salary(self, emp_sal, mon, dat, yea):
+        Treasurer.pay_emp(self.username, self.employeeid, emp_sal, mon, dat, yea)
 
 class Owner(User):
     def __init__(self, username, apt = -1):
         User.__init__(self, username, "owner")
         self.aptno = apt
         self.privilege = 2
+        all_apt.append(apt)
 
     def printdetails(self):
         print("\nOwner Name: " + self.username + "\nApartment Number: " + self.aptno + "\nUsertype: " + self.usertype)
 
     def paydues(self):
-        def paynow(amt):
-            pass
+        adv_time = 0
+        months = 0
+        cur_mon = 0
+        aptno = int(input("Enter the apartment number: "))
+        date = input("Enter date: ")
+        size = input("Enter apartment size(small, medium, large): ")
+        da = date.split("/", -1)
+        mon = da[0]
+        dat = da[1]
+        yea = da[2]
+        selection = int(input("1.Pay for current month\n2.Pay in advance\nEnter your choice: "))
+        if size == "small":
+            cost = 1500
+        if size == "medium":
+            cost = 2500
+        if size == "large":
+            cost = 3500
 
-        def payadv(amt):
-            def pay_quaterly(amt):
-                pass
-
-            def pay_semiannual(amt):
-                pass
-
-            def pay_annual(amt):
-                pass
+        if selection == 1:
+            months = 1
+            amount = cost * months
+            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)
+        else:
+            adv_time = int(input("1.Quarterly\n2.Semi-Annually\n3.Annually\nEnter your choice: "))
+            if adv_time == 1:
+                months = 3
+            if adv_time == 2:
+                months = 6
+            if adv_time == 3:
+                months = 12
+            amount = cost * months
+            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)
 
 class Resident(User):
     def __init__(self, username, apt = -1):
         User.__init__(self, username, "resident")
         self.aptno = apt
         self.privilege = 2
+        all_apt.append(apt)
 
     def printdetails(self):
         print("\nResident Name: " + self.username + "\nApartment Number: " + str(self.aptno) + "\nUsertype: " + self.usertype)
 
     def paydues(self):
-        def paynow(amt):
-            pass
+        adv_time = 0
+        months = 0
+        cur_mon = 0
+        aptno = int(input("Enter the apartment number: "))
+        date = input("Enter date: ")
+        size = input("Enter apartment size(small, medium, large): ")
+        da = date.split("/", -1)
+        mon = da[0]
+        dat = da[1]
+        yea = da[2]
+        selection = int(input("1.Pay for current month\n2.Pay in advance\nEnter your choice: "))
+        if size == "small":
+            cost = 1500
+        if size == "medium":
+            cost = 2500
+        if size == "large":
+            cost = 3500
 
-        def payadv(amt):
-            def pay_quaterly(amt):
-                pass
-
-            def pay_semiannual(amt):
-                pass
-
-            def pay_annual(amt):
-                pass
+        if selection == 1:
+            months = 1
+            amount = cost * months
+            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)
+        else:
+            adv_time = int(input("1.Quarterly\n2.Semi-Annually\n3.Annually\nEnter your choice: "))
+            if adv_time == 1:
+                months = 3
+            if adv_time == 2:
+                months = 6
+            if adv_time == 3:
+                months = 12
+            amount = cost * months
+            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)
 
 class Treasurer(User):
     def __init__(self, username):
@@ -167,24 +224,103 @@ class Treasurer(User):
         print("\nTreasurer Name: " + self.username + "\nUsertype: " + self.usertype)
     
     def generate_incomereport(self):
-        pass
+        mon = input("Enter month to generate report for: ");
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+        c.execute("SELECT * FROM apt_tran WHERE months = ? AND c_d = ?", (mon, 'c'))
+        records = c.fetchall()
+        
+        printrec = ''
+        for record in records:
+            date = str(record[1]) + "/" + str(record[0]) + "/" + str(record[2])
+            print("Date: " + date + "\tDeatails: " + str(record[3]) + "\tAmount: " + str(record[4]))
+            print("\n")
+        
+        if records == []:
+            print("No transactions!")
+        
+        conn.commit()
+        conn.close()
 
     def generate_expensereport(self):
-        pass
+        mon = input("Enter month to generate report for: ");
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+        c.execute("SELECT * FROM apt_tran WHERE months = ? AND c_d = ?", (mon, 'd'))
+        records = c.fetchall()
+        
+        printrec = ''
+        for record in records:
+            date = str(record[1]) + "/" + str(record[0]) + "/" + str(record[2])
+            print("Date: " + date + "\tDeatails: " + str(record[3]) + "\t\tAmount: " + str(record[4]))
+            print("\n")
+        
+        if records == []:
+            print("No transactions!")
 
-    def generate_defualterlist(self):
-        pass
+        conn.commit()
+        conn.close()
 
-    def pay(self):
-        def pay_emp(self, emp):
-            pass
+    def generate_defaulterlist(self):
+        paid_list = []
+        d_list = []
+        count = 0
+        mon = input("Enter month to generate report for: ")
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+        sql = "SELECT * FROM apt_def WHERE months = " + mon
+        c.execute(sql)
+        records = c.fetchall()
+        
+        printrec = ''
+        print("Paid List")
+        for record in records:
+            date = str(record[1]) + "/" + str(record[2])
+            tem = str(record[0]) + str(record[3])
+            print("Month: " + date + "\tDetails: " + tem + "\t\tPaid: " + str(record[4]))
+            paid_list.append(record[0])
+        
+        print("\nDefaulter List")
+        d_list = set(all_apt).difference(paid_list)
+        for i in d_list:
+            count += 1
+            print(str(count) + ". Apartment " + str(i))
+        print("There are total " + str(count) + " defaulters for this month")
 
-        def pay_vendor(self, vendor):
-            pass
+
+    @staticmethod
+    def pay_emp(name, empid, sal, mon, dat, yea):
+        tem = name + " - " + "monthly salary"
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO apt_tran (dates, months, years, details, amt, c_d) VALUES (?,?,?,?,?,?)",(mon, dat, yea, tem, sal, 'd'))
+        print("Transaction successful!")
+        conn.commit()
+        c.close()
+
+    @staticmethod
+    def pay_vendor(name, ven_id, service_name, service_cost, mon, dat, yea):
+        tem = name + " - " + service_name
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO apt_tran (dates, months, years, details, amt, c_d) VALUES (?,?,?,?,?,?)",(mon, dat, yea, tem, service_cost, 'd'))
+        print("Transaction successful!")
+        conn.commit()
+        c.close()
     
-    def collect(self):
-        def collect_dues(self, res_own):
-            pass
+    @staticmethod
+    def collect_dues(aptno, time, amt, mon, dat, yea):
+        tem = "Monthly dues ("+ str(time) + ") - Aptno: " + str(aptno)
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO apt_tran (dates, months, years, details, amt, c_d) VALUES (?,?,?,?,?,?)",(mon, dat, yea, tem, amt, 'c'))
+        m = dat
+        t = int(m) + time
+        for i in range(int(m), t):
+            c.execute("INSERT INTO apt_def (aptno, months, years, details, paid) VALUES (?,?,?,?,?)",(aptno, i, yea, tem, 'Y'))
+        print("Transaction successful!")
+        conn.commit()
+        c.close()
 
 def addusers(n):
     for x in range(0,n):
@@ -212,12 +348,22 @@ def displayallusers():
     for x in userlist:
         x.printdetails()
 
-# Testing purpose ....
+conn.commit()
+conn.close()
+
+# Testing purposes ....
+
+global all_apt
+all_apt = []
+
+res1 = Resident("res1", 123)
+res2 = Resident("res2", 234)
+res3 = Resident("res3", 345)
 
 userlist = []
 selection = -1
 while(selection != 0):
-    print("1.Add user\n2.Display users\n3.Backup\n4.Admin moduser\n0.Exit")
+    print("1.Add user\n2.Display users\n3.Backup\n4.Admin moduser\n5.Pay vendor\n6.Expenese Report\n7.Pay Employee\n8.Income Report\n9.Owner dues\n10.Defaulter\n11.Resdient\n0.Exit")
     selection = int(input("Enter your choice: "))
     if selection == 0:
         sys.exit
@@ -232,3 +378,24 @@ while(selection != 0):
     if selection == 4:
         a1 = Admin("admin1")
         a1.mod_user()
+    if selection == 5:
+        v1 = Vendor("ven1")
+        v1.perform_service()
+    if selection == 6:
+        t1 = Treasurer("t1")
+        t1.generate_expensereport()
+    if selection == 7:
+        e1 = Employee("e1")
+        e1.fill_timecard()
+    if selection == 8:
+        t1 = Treasurer("t1")
+        t1.generate_incomereport()
+    if selection == 9:
+        o1 = Owner("o1")
+        o1.paydues()
+    if selection == 10:
+        t1 = Treasurer("t1")
+        t1.generate_defaulterlist()
+    if selection == 11:
+        r1 = Resident("r1", 123)
+        r1.paydues()
