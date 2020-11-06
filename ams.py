@@ -75,8 +75,11 @@ class Admin(User):
 
     # Delete users
     def del_user(self):
-        del_username = input("Enter username of user to be deleted: ")
+        if len(userlist) == 1:
+                print("There are no other users!")
+                return
 
+        del_username = input("Enter username of user to be deleted: ")
         for i in userlist:
             if i.username == del_username:
                 userlist.remove(i)
