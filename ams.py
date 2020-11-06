@@ -11,6 +11,10 @@ import tkinter.font as tkFont
 # c = conn.cursor()
 # c.execute("CREATE TABLE apt_tran (months integer, dates integer, years integer, details text, amt real, c_d text)")
 # c.execute("CREATE TABLE apt_def (aptno integer, months integer, years integer,details text, paid text)")
+# c.execute("CREATE TABLE apt_det (size text, cost real)")                      # Inserting monthly due cost based on size of apt
+# c.execute("INSERT INTO apt_det VALUES ('small', '1500')")
+# c.execute("INSERT INTO apt_det VALUES ('medium', '2500')")
+# c.execute("INSERT INTO apt_det VALUES ('large', '3500')")
 # conn.commit()
 
 # User super class
@@ -169,10 +173,11 @@ class Employee(User):
 # Owner Class
 class Owner(User):
     # Constructor
-    def __init__(self, username, apt = -1):
+    def __init__(self, username, apt = -1, a_size = None):
         User.__init__(self, username, "owner")          # Calling the super constructor
         self.aptno = apt
         self.privilege = 2
+        self.apt_size = a_size
         all_apt.append(apt)
 
     # Function to print Owner Details
@@ -185,27 +190,36 @@ class Owner(User):
         months = 0
         cur_mon = 0
 
-        aptno = int(input("Enter the apartment number: "))
+        # aptno = int(input("Enter the apartment number: "))
         date = input("Enter date: ")
-        size = input("Enter apartment size(small, medium, large): ")
+        # size = input("Enter apartment size(small, medium, large): ")
 
         da = date.split("/", -1)
         mon = da[0]
         dat = da[1]
         yea = da[2]
 
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+
         selection = int(input("1.Pay for current month\n2.Pay in advance\nEnter your choice: "))
-        if size == "small":
-            cost = 1500
-        if size == "medium":
-            cost = 2500
-        if size == "large":
-            cost = 3500
+        if a_size == "small":
+            c.execute("SELECT cost FROM apt_det WHERE size = 'small'")
+            cost = c.fetchone()
+        if a_size == "medium":
+            c.execute("SELECT cost FROM apt_det WHERE size = 'medium'")
+            cost = c.fetchone()
+        if a_size == "large":
+            c.execute("SELECT cost FROM apt_det WHERE size = 'large'")
+            cost = c.fetchone()
+
+        conn.commit()
+        c.close()
 
         if selection == 1:
             months = 1
             amount = cost * months
-            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)
+            Treasurer.collect_dues(self.aptno, months, amount[0], mon, dat, yea)
         else:
             adv_time = int(input("1.Quarterly\n2.Semi-Annually\n3.Annually\nEnter your choice: "))
             if adv_time == 1:
@@ -215,15 +229,16 @@ class Owner(User):
             if adv_time == 3:
                 months = 12
             amount = cost * months
-            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)           #static method call
+            Treasurer.collect_dues(self.aptno, months, amount[0], mon, dat, yea)           #static method call
 
 # Resident Class
 class Resident(User):
     # Constructor
-    def __init__(self, username, apt = -1):
+    def __init__(self, username, apt = -1, a_size = None):
         User.__init__(self, username, "resident")           # Calling the super constructor
         self.aptno = apt
         self.privilege = 2
+        self.apt_size = a_size
         all_apt.append(apt)
 
     # Function to print Resident Details
@@ -236,27 +251,36 @@ class Resident(User):
         months = 0
         cur_mon = 0
 
-        aptno = int(input("Enter the apartment number: "))
+        # aptno = int(input("Enter the apartment number: "))
         date = input("Enter date: ")
-        size = input("Enter apartment size(small, medium, large): ")
+        # size = input("Enter apartment size(small, medium, large): ")
 
         da = date.split("/", -1)
         mon = da[0]
         dat = da[1]
         yea = da[2]
 
+        conn = sqlite3.connect('apt.db')
+        c = conn.cursor()
+
         selection = int(input("1.Pay for current month\n2.Pay in advance\nEnter your choice: "))
-        if size == "small":
-            cost = 1500
-        if size == "medium":
-            cost = 2500
-        if size == "large":
-            cost = 3500
+        if a_size == "small":
+            c.execute("SELECT cost FROM apt_det WHERE size = 'small'")
+            cost = c.fetchone()
+        if a_size == "medium":
+            c.execute("SELECT cost FROM apt_det WHERE size = 'medium'")
+            cost = c.fetchone()
+        if a_size == "large":
+            c.execute("SELECT cost FROM apt_det WHERE size = 'large'")
+            cost = c.fetchone()
+
+        conn.commit()
+        c.close()
 
         if selection == 1:
             months = 1
             amount = cost * months
-            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)
+            Treasurer.collect_dues(self.aptno, months, amount[0], mon, dat, yea)
         else:
             adv_time = int(input("1.Quarterly\n2.Semi-Annually\n3.Annually\nEnter your choice: "))
             if adv_time == 1:
@@ -266,7 +290,7 @@ class Resident(User):
             if adv_time == 3:
                 months = 12
             amount = cost * months
-            Treasurer.collect_dues(self.aptno, months, amount, mon, dat, yea)           #static method call
+            Treasurer.collect_dues(self.aptno, months, amount[0], mon, dat, yea)           #static method call
 
 # Treasurer Class
 class Treasurer(User):
@@ -291,7 +315,7 @@ class Treasurer(User):
         # printrec = ''
         for record in records:
             date = str(record[1]) + "/" + str(record[0]) + "/" + str(record[2])
-            print("Date: " + date + "\tDeatails: " + str(record[3]) + "\tAmount: " + str(record[4]))
+            print("Date: " + date + "\t\tDeatails: " + str(record[3]) + "\t\tAmount: " + str(record[4]))
             print("\n")
         
         if records == []:
@@ -339,8 +363,8 @@ class Treasurer(User):
         print("Paid List")
         for record in records:
             date = str(record[1]) + "/" + str(record[2])
-            tem = str(record[0]) + str(record[3])
-            print("Month: " + date + "\tDetails: " + tem + "\t\tPaid: " + str(record[4]))
+            # tem = str(record[0]) + str(record[3])
+            print("Month: " + date + "\tDetails: " + str(record[3]) + "\t\tPaid: " + str(record[4]))
             paid_list.append(record[0])
         
         print("\nDefaulter List")
@@ -386,7 +410,7 @@ class Treasurer(User):
 
         conn = sqlite3.connect('apt.db')
         c = conn.cursor()
-        c.execute("INSERT INTO apt_tran (dates, months, years, details, amt, c_d) VALUES (?,?,?,?,?,?)",(mon, dat, yea, tem, amt, 'c'))
+        c.execute("INSERT INTO apt_tran (dates, months, years, details, amt, c_d) VALUES (?,?,?,?,?,?)",(mon, dat, yea, tem, str(amt), 'c'))
         
         m = dat
         t = int(m) + time
@@ -437,10 +461,12 @@ while(True):
         userlist.append(Admin(name))
     if type1 == "resident":
         apt = int(input("Enter apartment number: "))
-        userlist.append(Resident(name,apt))
+        a_size = input("Enter apartment size(small, medium, large): ")
+        userlist.append(Resident(name,apt, a_size))
     if type1 == "owner":
         apt = input("Enter apartment number: ")
-        userlist.append(Owner(name,apt))
+        a_size = input("Enter apartment size(small, medium, large): ")
+        userlist.append(Owner(name,apt, a_size))
     if type1 == "vendor":
         vid = input("Enter vendor id: ")
         userlist.append(Vendor(name,vid))
@@ -453,7 +479,7 @@ while(True):
     exit = input("Would you like to end the inital setup: ")
     if exit == "yes":
         break
-    
+
 print("Intial setup finished")
 
 while (True):
