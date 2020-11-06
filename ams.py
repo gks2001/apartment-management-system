@@ -494,10 +494,12 @@ while (True):
                 admin_list.append(i)
                 admin_names.append(i.username)
         count = 0
-        for admin in admin_names:
-            if admin_names == []:
+
+        if admin_names == []:
                 print("There are no admins yet!")
                 break
+
+        for admin in admin_names:
             count += 1
             print(str(count) + ". " + admin)
         admin_ind = int(input("Select an admin: "))
@@ -527,10 +529,12 @@ while (True):
                 resident_list.append(i)
                 resident_names.append(i.username)
         count = 0
-        for resident in resident_names:
-            if resident_names == []:
+
+        if resident_names == []:
                 print("There are no residents yet!")
                 break
+
+        for resident in resident_names:
             count += 1
             print(str(count) + ". " + resident)
         resident_ind = int(input("Select an resident: "))
@@ -556,10 +560,12 @@ while (True):
                 owner_list.append(i)
                 owner_names.append(i.username)
         count = 0
-        for owner in owner_names:
-            if owner_names == []:
+
+        if owner_names == []:
                 print("There are no owners yet!")
                 break
+
+        for owner in owner_names:
             count += 1
             print(str(count) + ". " + owner)
         owner_ind = int(input("Select an owner: "))
@@ -585,10 +591,12 @@ while (True):
                 vendor_list.append(i)
                 vendor_names.append(i.username)
         count = 0
-        for vendor in vendor_names:
-            if vendor_names == []:
+
+        if vendor_names == []:
                 print("There are no vendors yet!")
                 break
+
+        for vendor in vendor_names:
             count += 1
             print(str(count) + ". " + vendor)
         vendor_ind = int(input("Select an vendor: "))
@@ -614,10 +622,12 @@ while (True):
                 employee_list.append(i)
                 employee_names.append(i.username)
         count = 0
-        for employee in employee_names:
-            if employee_names == []:
+
+        if employee_names == []:
                 print("There are no employees yet!")
                 break
+
+        for employee in employee_names:
             count += 1
             print(str(count) + ". " + employee)
         employee_ind = int(input("Select an employee: "))
@@ -643,10 +653,12 @@ while (True):
                 treasurer_list.append(i)
                 treasurer_names.append(i.username)
         count = 0
-        for treasurer in treasurer_names:
-            if treasurer_names == []:
+
+        if treasurer_names == []:
                 print("There are no treasurers yet!")
                 break
+
+        for treasurer in treasurer_names:
             count += 1
             print(str(count) + ". " + treasurer)
         treasurer_ind = int(input("Select an treasurer: "))
