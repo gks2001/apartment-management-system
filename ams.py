@@ -228,6 +228,7 @@ class Owner(User):
                 months = 6
             if adv_time == 3:
                 months = 12
+
             amount = cost * months
             Treasurer.collect_dues(self.aptno, months, amount[0], mon, dat, yea)           #static method call
 
@@ -289,6 +290,7 @@ class Resident(User):
                 months = 6
             if adv_time == 3:
                 months = 12
+
             amount = cost * months
             Treasurer.collect_dues(self.aptno, months, amount[0], mon, dat, yea)           #static method call
 
@@ -489,6 +491,7 @@ while (True):
     if selection == 1:
         admin_list = []
         admin_names = []
+
         for i in userlist:
             if i.usertype == "admin":
                 admin_list.append(i)
@@ -502,6 +505,7 @@ while (True):
         for admin in admin_names:
             count += 1
             print(str(count) + ". " + admin)
+
         admin_ind = int(input("Select an admin: "))
         admin_ind -= 1
 
@@ -524,6 +528,7 @@ while (True):
     if selection == 2:
         resident_list = []
         resident_names = []
+
         for i in userlist:
             if i.usertype == "resident":
                 resident_list.append(i)
@@ -537,6 +542,7 @@ while (True):
         for resident in resident_names:
             count += 1
             print(str(count) + ". " + resident)
+
         resident_ind = int(input("Select an resident: "))
         resident_ind -= 1
 
@@ -555,6 +561,7 @@ while (True):
     if selection == 3:
         owner_list = []
         owner_names = []
+
         for i in userlist:
             if i.usertype == "owner":
                 owner_list.append(i)
@@ -568,6 +575,7 @@ while (True):
         for owner in owner_names:
             count += 1
             print(str(count) + ". " + owner)
+
         owner_ind = int(input("Select an owner: "))
         owner_ind -= 1
 
@@ -586,6 +594,7 @@ while (True):
     if selection == 4:
         vendor_list = []
         vendor_names = []
+
         for i in userlist:
             if i.usertype == "vendor":
                 vendor_list.append(i)
@@ -599,6 +608,7 @@ while (True):
         for vendor in vendor_names:
             count += 1
             print(str(count) + ". " + vendor)
+
         vendor_ind = int(input("Select an vendor: "))
         vendor_ind -= 1
 
@@ -617,6 +627,7 @@ while (True):
     if selection == 5:
         employee_list = []
         employee_names = []
+
         for i in userlist:
             if i.usertype == "employee":
                 employee_list.append(i)
@@ -630,6 +641,7 @@ while (True):
         for employee in employee_names:
             count += 1
             print(str(count) + ". " + employee)
+
         employee_ind = int(input("Select an employee: "))
         employee_ind -= 1
 
@@ -648,6 +660,7 @@ while (True):
     if selection == 6:
         treasurer_list = []
         treasurer_names = []
+
         for i in userlist:
             if i.usertype == "treasurer":
                 treasurer_list.append(i)
@@ -661,6 +674,7 @@ while (True):
         for treasurer in treasurer_names:
             count += 1
             print(str(count) + ". " + treasurer)
+
         treasurer_ind = int(input("Select an treasurer: "))
         treasurer_ind -= 1
 
@@ -679,5 +693,6 @@ while (True):
                 treasurer_list[treasurer_ind].generate_defaulterlist()
             if selection1 == 0:
                 break
+            
     if selection == 0:
         sys.exit()
