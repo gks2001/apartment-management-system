@@ -44,6 +44,7 @@ class Admin(User):
 
     # Function to get backup choice
     def backup(self):
+        clear()
         bkp_fileloc = "D:\\AMS\\apt.db"
         bkp_choice = int(input("cloud or physical (0/1): "))
 
@@ -65,6 +66,7 @@ class Admin(User):
     
     # Modify users
     def mod_user(self):
+        clear()
         print("1.add user\n2.del user\n3.update user")
         mu_choice = int(input("Enter your choice: "))
 
@@ -133,6 +135,7 @@ class Vendor(User):
 
     # Function to collect payment for vendor services
     def perform_service(self):
+        clear()
         service_name = input("Enter the service name: ")
         service_cost = float(input("Enter the payment amount: "))
         date = input("Enter date: ")
@@ -161,6 +164,7 @@ class Employee(User):
 
     # Function to collect employee salary
     def fill_timecard(self):
+        clear()
         date = input("Enter date: ")
 
         da = date.split("/", -1)
@@ -192,6 +196,7 @@ class Owner(User):
 
     # Function to pay monthly dues for apt
     def paydues(self):
+        clear()
         adv_time = 0
         months = 0
         cur_mon = 0
@@ -254,6 +259,7 @@ class Resident(User):
 
     # Function to pay monthly for apt
     def paydues(self):
+        clear()
         adv_time = 0
         months = 0
         cur_mon = 0
@@ -313,6 +319,7 @@ class Treasurer(User):
     
     # Function to generate income report
     def generate_incomereport(self):
+        clear()
         mon = input("Enter month to generate report for: ")
 
         conn = sqlite3.connect('apt.db')
@@ -334,6 +341,7 @@ class Treasurer(User):
 
     # Function to generate expense repirt
     def generate_expensereport(self):
+        clear()
         mon = input("Enter month to generate report for: ")
         
         conn = sqlite3.connect('apt.db')
@@ -355,6 +363,7 @@ class Treasurer(User):
 
     # Function to genertate defaulters list
     def generate_defaulterlist(self):
+        clear()
         paid_list = []
         d_list = []
         count = 0
@@ -432,6 +441,7 @@ class Treasurer(User):
 
 # Function add users
 def addusers(n):
+    clear()
     for x in range(0,n):
         name = input("Enter user name: ")
         type1 = input("Enter your user type: ")
@@ -440,10 +450,12 @@ def addusers(n):
             userlist.append(Admin(name))
         if type1 == "resident":
             apt = int(input("Enter apartment number: "))
-            userlist.append(Resident(name,apt))
+            a_size = input("Enter apartment size(small, medium, large): ")
+            userlist.append(Resident(name, apt, a_size))
         if type1 == "owner":
             apt = input("Enter apartment number: ")
-            userlist.append(Owner(name,apt))
+            a_size = input("Enter apartment size(small, medium, large): ")
+            userlist.append(Owner(name, apt, a_size))
         if type1 == "vendor":
             vid = input("Enter vendor id: ")
             userlist.append(Vendor(name,vid))
@@ -467,10 +479,12 @@ def clear():
 # conn.commit()
 # conn.close()
 
+#global declarations
 global all_apt
 all_apt = []
 userlist = []
 
+# main
 print("Intial Setup")
 while(True):
     name = input("Enter user name: ")
@@ -511,12 +525,14 @@ while (True):
         admin_names = []
 
         for i in userlist:
+            clear()
             if i.usertype == "admin":
                 admin_list.append(i)
                 admin_names.append(i.username)
         count = 0
 
         if admin_names == []:
+                clear()
                 print("There are no admins yet!")
                 break
 
@@ -535,22 +551,20 @@ while (True):
 
             if selection1 == 1:
                 admin_list[admin_ind].printdetails()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
-                a = None
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 2:
                 admin_list[admin_ind].backup()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 3:
                 admin_list[admin_ind].mod_user()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 4:
                 admin_list[admin_ind].displayallusers()
-                print("Press any key to continue ...")
-                b = keyboard.read_key()
-                b = None
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 0:
                 clear()
                 break
@@ -562,12 +576,14 @@ while (True):
         resident_names = []
 
         for i in userlist:
+            clear()
             if i.usertype == "resident":
                 resident_list.append(i)
                 resident_names.append(i.username)
         count = 0
 
         if resident_names == []:
+                clear()
                 print("There are no residents yet!")
                 break
 
@@ -586,12 +602,12 @@ while (True):
 
             if selection1 == 1:
                 resident_list[resident_ind].printdetails()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 2:
                 resident_list[resident_ind].paydues()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 0:
                 clear()
                 break
@@ -602,12 +618,14 @@ while (True):
         owner_names = []
 
         for i in userlist:
+            clear()
             if i.usertype == "owner":
                 owner_list.append(i)
                 owner_names.append(i.username)
         count = 0
 
         if owner_names == []:
+                clear()
                 print("There are no owners yet!")
                 break
 
@@ -626,12 +644,12 @@ while (True):
 
             if selection1 == 1:
                 owner_list[owner_ind].printdetails()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 2:
                 owner_list[owner_ind].paydues()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 0:
                 clear()
                 break
@@ -642,12 +660,14 @@ while (True):
         vendor_names = []
 
         for i in userlist:
+            clear()
             if i.usertype == "vendor":
                 vendor_list.append(i)
                 vendor_names.append(i.username)
         count = 0
 
         if vendor_names == []:
+                clear()
                 print("There are no vendors yet!")
                 break
 
@@ -666,12 +686,12 @@ while (True):
 
             if selection1 == 1:
                 vendor_list[vendor_ind].printdetails()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 2:
                 vendor_list[vendor_ind].perform_service()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 0:
                 clear()
                 break
@@ -682,12 +702,14 @@ while (True):
         employee_names = []
 
         for i in userlist:
+            clear()
             if i.usertype == "employee":
                 employee_list.append(i)
                 employee_names.append(i.username)
         count = 0
 
         if employee_names == []:
+                clear()
                 print("There are no employees yet!")
                 break
 
@@ -706,12 +728,12 @@ while (True):
 
             if selection1 == 1:
                 employee_list[employee_ind].printdetails()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 2:
                 employee_list[employee_ind].fill_timecard()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 0:
                 clear()
                 break
@@ -722,12 +744,14 @@ while (True):
         treasurer_names = []
 
         for i in userlist:
+            clear()
             if i.usertype == "treasurer":
                 treasurer_list.append(i)
                 treasurer_names.append(i.username)
         count = 0
 
         if treasurer_names == []:
+                clear()
                 print("There are no treasurers yet!")
                 break
 
@@ -746,24 +770,23 @@ while (True):
 
             if selection1 == 1:
                 treasurer_list[treasurer_ind].printdetails()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 2:
                 treasurer_list[treasurer_ind].generate_incomereport()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 3:
                 treasurer_list[treasurer_ind].generate_expensereport()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 4:
                 treasurer_list[treasurer_ind].generate_defaulterlist()
-                print("Press any key to continue ...")
-                a = keyboard.read_key()
+                print("Press space bar to continue ...")
+                keyboard.wait(" ")
             if selection1 == 0:
                 clear()
                 break
             
     if selection == 0:
         sys.exit()
-
