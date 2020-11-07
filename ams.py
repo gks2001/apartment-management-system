@@ -5,6 +5,7 @@ import sqlite3
 from tkinter import *
 from tkinter import ttk
 import tkinter.font as tkFont
+from os import system, name
 
 # Inital creation of the database (Only run the first time)
 # conn = sqlite3.connect('apt.db')
@@ -450,6 +451,17 @@ def addusers(n):
         if type1 == "treasurer":
             userlist.append(Treasurer(name))
 
+# Function to clear screen using os commands
+def clear():
+    if name == 'nt':                # NT for Windows
+        _ = system('cls')
+    elif name == 'posix':           # POSIX for MacOS and Linux
+        _ = system('clear')
+    else:
+        return
+    
+    clear()
+
 # conn.commit()
 # conn.close()
 
@@ -486,8 +498,10 @@ while(True):
         break
 
 print("Intial setup finished")
+clear()
 
 while (True):
+    clear()
     print("1.Admin\n2.Resident\n3.Owner\n4.Vendor\n5.Employee\n6.Treasurer\n0.Exit")
     selection = int(input("Enter your choice: "))
 
@@ -514,6 +528,7 @@ while (True):
 
         print("Admin functions: ")
         while(True):
+            clear()
             print("1.Print user details\n2.Take Backup\n3.Modify user\n4.Display all users\n0.Exit admin functions")
             selection1 = int(input("Enter your choice: "))
 
@@ -527,8 +542,10 @@ while (True):
                 admin_list[admin_ind].displayallusers()
             if selection1 == 0:
                 break
+            
     
     if selection == 2:
+        clear()
         resident_list = []
         resident_names = []
 
@@ -551,6 +568,7 @@ while (True):
 
         print("Resident functions: ")
         while(True):
+            clear()
             print("1.Print user details\n2.Pay dues\n0.Exit resident functions")
             selection1 = int(input("Enter your choice: "))
 
@@ -562,6 +580,7 @@ while (True):
                 break
 
     if selection == 3:
+        clear()
         owner_list = []
         owner_names = []
 
@@ -584,6 +603,7 @@ while (True):
 
         print("Owner functions: ")
         while(True):
+            clear()
             print("1.Print user details\n2.Pay dues\n0.Exit owner functions")
             selection1 = int(input("Enter your choice: "))
 
@@ -595,6 +615,7 @@ while (True):
                 break
 
     if selection == 4:
+        clear()
         vendor_list = []
         vendor_names = []
 
@@ -617,6 +638,7 @@ while (True):
 
         print("Vendor functions: ")
         while(True):
+            clear()
             print("1.Print user details\n2.Vendor service\n0.Exit vendor functions")
             selection1 = int(input("Enter your choice: "))
 
@@ -628,6 +650,7 @@ while (True):
                 break
 
     if selection == 5:
+        clear()
         employee_list = []
         employee_names = []
 
@@ -650,6 +673,7 @@ while (True):
 
         print("employee functions: ")
         while(True):
+            clear()
             print("1.Print user details\n2.Employee payment\n0.Exit employee functions")
             selection1 = int(input("Enter your choice: "))
 
@@ -661,6 +685,7 @@ while (True):
                 break
     
     if selection == 6:
+        clear()
         treasurer_list = []
         treasurer_names = []
 
@@ -683,6 +708,7 @@ while (True):
 
         print("Treasurer functions: ")
         while(True):
+            clear()
             print("1.Print user details\n2.Generate income report\n3.Generate expense report\n4.Generate defaulters list\n0.Exit treasurer functions")
             selection1 = int(input("Enter your choice: "))
 
