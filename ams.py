@@ -6,6 +6,8 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.font as tkFont
 from os import system, name
+from time import sleep
+import keyboard
 
 # Inital creation of the database (Only run the first time)
 # conn = sqlite3.connect('apt.db')
@@ -453,14 +455,14 @@ def addusers(n):
 
 # Function to clear screen using os commands
 def clear():
-    if name == 'nt':                # NT for Windows
+    if os.name == 'nt':                # NT for Windows
         _ = system('cls')
-    elif name == 'posix':           # POSIX for MacOS and Linux
+    elif os.name == 'posix':           # POSIX for MacOS and Linux
         _ = system('clear')
     else:
         return
-    
-    clear()
+    sleep(0)
+    # clear()
 
 # conn.commit()
 # conn.close()
@@ -501,7 +503,6 @@ print("Intial setup finished")
 clear()
 
 while (True):
-    clear()
     print("1.Admin\n2.Resident\n3.Owner\n4.Vendor\n5.Employee\n6.Treasurer\n0.Exit")
     selection = int(input("Enter your choice: "))
 
@@ -534,13 +535,24 @@ while (True):
 
             if selection1 == 1:
                 admin_list[admin_ind].printdetails()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
+                a = None
             if selection1 == 2:
                 admin_list[admin_ind].backup()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 3:
                 admin_list[admin_ind].mod_user()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 4:
                 admin_list[admin_ind].displayallusers()
+                print("Press any key to continue ...")
+                b = keyboard.read_key()
+                b = None
             if selection1 == 0:
+                clear()
                 break
             
     
@@ -574,9 +586,14 @@ while (True):
 
             if selection1 == 1:
                 resident_list[resident_ind].printdetails()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 2:
                 resident_list[resident_ind].paydues()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 0:
+                clear()
                 break
 
     if selection == 3:
@@ -609,9 +626,14 @@ while (True):
 
             if selection1 == 1:
                 owner_list[owner_ind].printdetails()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 2:
                 owner_list[owner_ind].paydues()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 0:
+                clear()
                 break
 
     if selection == 4:
@@ -644,9 +666,14 @@ while (True):
 
             if selection1 == 1:
                 vendor_list[vendor_ind].printdetails()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 2:
                 vendor_list[vendor_ind].perform_service()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 0:
+                clear()
                 break
 
     if selection == 5:
@@ -679,9 +706,14 @@ while (True):
 
             if selection1 == 1:
                 employee_list[employee_ind].printdetails()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 2:
                 employee_list[employee_ind].fill_timecard()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 0:
+                clear()
                 break
     
     if selection == 6:
@@ -714,13 +746,22 @@ while (True):
 
             if selection1 == 1:
                 treasurer_list[treasurer_ind].printdetails()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 2:
                 treasurer_list[treasurer_ind].generate_incomereport()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 3:
                 treasurer_list[treasurer_ind].generate_expensereport()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 4:
                 treasurer_list[treasurer_ind].generate_defaulterlist()
+                print("Press any key to continue ...")
+                a = keyboard.read_key()
             if selection1 == 0:
+                clear()
                 break
             
     if selection == 0:
