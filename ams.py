@@ -476,317 +476,318 @@ def clear():
     sleep(0)
     # clear()
 
-# conn.commit()
-# conn.close()
-
 #global declarations
 global all_apt
 all_apt = []
 userlist = []
 
 # main
-print("Intial Setup")
-while(True):
-    name = input("Enter user name: ")
-    type1 = input("Enter your user type: ")
-    
-    if type1 == "admin":
-        userlist.append(Admin(name))
-    if type1 == "resident":
-        apt = int(input("Enter apartment number: "))
-        a_size = input("Enter apartment size(small, medium, large): ")
-        userlist.append(Resident(name,apt, a_size))
-    if type1 == "owner":
-        apt = input("Enter apartment number: ")
-        a_size = input("Enter apartment size(small, medium, large): ")
-        userlist.append(Owner(name,apt, a_size))
-    if type1 == "vendor":
-        vid = input("Enter vendor id: ")
-        userlist.append(Vendor(name,vid))
-    if type1 == "employee":
-        eid = input("Enter employee id: ")
-        userlist.append(Employee(name,eid))
-    if type1 == "treasurer":
-        userlist.append(Treasurer(name))
-    
-    exit = input("Would you like to end the inital setup: ")
-    if exit == "yes":
-        break
+def main(): 
+    print("Intial Setup")
+    while(True):
+        name = input("Enter user name: ")
+        type1 = input("Enter your user type: ")
+        
+        if type1 == "admin":
+            userlist.append(Admin(name))
+        if type1 == "resident":
+            apt = int(input("Enter apartment number: "))
+            a_size = input("Enter apartment size(small, medium, large): ")
+            userlist.append(Resident(name,apt, a_size))
+        if type1 == "owner":
+            apt = input("Enter apartment number: ")
+            a_size = input("Enter apartment size(small, medium, large): ")
+            userlist.append(Owner(name,apt, a_size))
+        if type1 == "vendor":
+            vid = input("Enter vendor id: ")
+            userlist.append(Vendor(name,vid))
+        if type1 == "employee":
+            eid = input("Enter employee id: ")
+            userlist.append(Employee(name,eid))
+        if type1 == "treasurer":
+            userlist.append(Treasurer(name))
+        
+        exit = input("Would you like to end the inital setup: ")
+        if exit == "yes":
+            break
 
-print("Intial setup finished")
-clear()
+    print("Intial setup finished")
+    clear()
 
-while (True):
-    print("1.Admin\n2.Resident\n3.Owner\n4.Vendor\n5.Employee\n6.Treasurer\n0.Exit")
-    selection = int(input("Enter your choice: "))
+    while (True):
+        print("1.Admin\n2.Resident\n3.Owner\n4.Vendor\n5.Employee\n6.Treasurer\n0.Exit")
+        selection = int(input("Enter your choice: "))
 
-    if selection == 1:
-        admin_list = []
-        admin_names = []
+        if selection == 1:
+            admin_list = []
+            admin_names = []
 
-        for i in userlist:
-            clear()
-            if i.usertype == "admin":
-                admin_list.append(i)
-                admin_names.append(i.username)
-        count = 0
-
-        if admin_names == []:
+            for i in userlist:
                 clear()
-                print("There are no admins yet!")
-                break
+                if i.usertype == "admin":
+                    admin_list.append(i)
+                    admin_names.append(i.username)
+            count = 0
 
-        for admin in admin_names:
-            count += 1
-            print(str(count) + ". " + admin)
+            if admin_names == []:
+                    clear()
+                    print("There are no admins yet!")
+                    break
 
-        admin_ind = int(input("Select an admin: "))
-        admin_ind -= 1
+            for admin in admin_names:
+                count += 1
+                print(str(count) + ". " + admin)
 
-        print("Admin functions: ")
-        while(True):
-            clear()
-            print("1.Print user details\n2.Take Backup\n3.Modify user\n4.Display all users\n0.Exit admin functions")
-            selection1 = int(input("Enter your choice: "))
+            admin_ind = int(input("Select an admin: "))
+            admin_ind -= 1
 
-            if selection1 == 1:
-                admin_list[admin_ind].printdetails()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 2:
-                admin_list[admin_ind].backup()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 3:
-                admin_list[admin_ind].mod_user()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 4:
-                admin_list[admin_ind].displayallusers()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 0:
+            print("Admin functions: ")
+            while(True):
                 clear()
-                break
-            
-    
-    if selection == 2:
-        clear()
-        resident_list = []
-        resident_names = []
+                print("1.Print user details\n2.Take Backup\n3.Modify user\n4.Display all users\n0.Exit admin functions")
+                selection1 = int(input("Enter your choice: "))
 
-        for i in userlist:
+                if selection1 == 1:
+                    admin_list[admin_ind].printdetails()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 2:
+                    admin_list[admin_ind].backup()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 3:
+                    admin_list[admin_ind].mod_user()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 4:
+                    admin_list[admin_ind].displayallusers()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 0:
+                    clear()
+                    break
+                
+        
+        if selection == 2:
             clear()
-            if i.usertype == "resident":
-                resident_list.append(i)
-                resident_names.append(i.username)
-        count = 0
+            resident_list = []
+            resident_names = []
 
-        if resident_names == []:
+            for i in userlist:
                 clear()
-                print("There are no residents yet!")
-                break
+                if i.usertype == "resident":
+                    resident_list.append(i)
+                    resident_names.append(i.username)
+            count = 0
 
-        for resident in resident_names:
-            count += 1
-            print(str(count) + ". " + resident)
+            if resident_names == []:
+                    clear()
+                    print("There are no residents yet!")
+                    break
 
-        resident_ind = int(input("Select an resident: "))
-        resident_ind -= 1
+            for resident in resident_names:
+                count += 1
+                print(str(count) + ". " + resident)
 
-        print("Resident functions: ")
-        while(True):
+            resident_ind = int(input("Select an resident: "))
+            resident_ind -= 1
+
+            print("Resident functions: ")
+            while(True):
+                clear()
+                print("1.Print user details\n2.Pay dues\n0.Exit resident functions")
+                selection1 = int(input("Enter your choice: "))
+
+                if selection1 == 1:
+                    resident_list[resident_ind].printdetails()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 2:
+                    resident_list[resident_ind].paydues()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 0:
+                    clear()
+                    break
+
+        if selection == 3:
             clear()
-            print("1.Print user details\n2.Pay dues\n0.Exit resident functions")
-            selection1 = int(input("Enter your choice: "))
+            owner_list = []
+            owner_names = []
 
-            if selection1 == 1:
-                resident_list[resident_ind].printdetails()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 2:
-                resident_list[resident_ind].paydues()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 0:
+            for i in userlist:
                 clear()
-                break
+                if i.usertype == "owner":
+                    owner_list.append(i)
+                    owner_names.append(i.username)
+            count = 0
 
-    if selection == 3:
-        clear()
-        owner_list = []
-        owner_names = []
+            if owner_names == []:
+                    clear()
+                    print("There are no owners yet!")
+                    break
 
-        for i in userlist:
+            for owner in owner_names:
+                count += 1
+                print(str(count) + ". " + owner)
+
+            owner_ind = int(input("Select an owner: "))
+            owner_ind -= 1
+
+            print("Owner functions: ")
+            while(True):
+                clear()
+                print("1.Print user details\n2.Pay dues\n0.Exit owner functions")
+                selection1 = int(input("Enter your choice: "))
+
+                if selection1 == 1:
+                    owner_list[owner_ind].printdetails()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 2:
+                    owner_list[owner_ind].paydues()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 0:
+                    clear()
+                    break
+
+        if selection == 4:
             clear()
-            if i.usertype == "owner":
-                owner_list.append(i)
-                owner_names.append(i.username)
-        count = 0
+            vendor_list = []
+            vendor_names = []
 
-        if owner_names == []:
+            for i in userlist:
                 clear()
-                print("There are no owners yet!")
-                break
+                if i.usertype == "vendor":
+                    vendor_list.append(i)
+                    vendor_names.append(i.username)
+            count = 0
 
-        for owner in owner_names:
-            count += 1
-            print(str(count) + ". " + owner)
+            if vendor_names == []:
+                    clear()
+                    print("There are no vendors yet!")
+                    break
 
-        owner_ind = int(input("Select an owner: "))
-        owner_ind -= 1
+            for vendor in vendor_names:
+                count += 1
+                print(str(count) + ". " + vendor)
 
-        print("Owner functions: ")
-        while(True):
+            vendor_ind = int(input("Select an vendor: "))
+            vendor_ind -= 1
+
+            print("Vendor functions: ")
+            while(True):
+                clear()
+                print("1.Print user details\n2.Vendor service\n0.Exit vendor functions")
+                selection1 = int(input("Enter your choice: "))
+
+                if selection1 == 1:
+                    vendor_list[vendor_ind].printdetails()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 2:
+                    vendor_list[vendor_ind].perform_service()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 0:
+                    clear()
+                    break
+
+        if selection == 5:
             clear()
-            print("1.Print user details\n2.Pay dues\n0.Exit owner functions")
-            selection1 = int(input("Enter your choice: "))
+            employee_list = []
+            employee_names = []
 
-            if selection1 == 1:
-                owner_list[owner_ind].printdetails()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 2:
-                owner_list[owner_ind].paydues()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 0:
+            for i in userlist:
                 clear()
-                break
+                if i.usertype == "employee":
+                    employee_list.append(i)
+                    employee_names.append(i.username)
+            count = 0
 
-    if selection == 4:
-        clear()
-        vendor_list = []
-        vendor_names = []
+            if employee_names == []:
+                    clear()
+                    print("There are no employees yet!")
+                    break
 
-        for i in userlist:
+            for employee in employee_names:
+                count += 1
+                print(str(count) + ". " + employee)
+
+            employee_ind = int(input("Select an employee: "))
+            employee_ind -= 1
+
+            print("employee functions: ")
+            while(True):
+                clear()
+                print("1.Print user details\n2.Employee payment\n0.Exit employee functions")
+                selection1 = int(input("Enter your choice: "))
+
+                if selection1 == 1:
+                    employee_list[employee_ind].printdetails()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 2:
+                    employee_list[employee_ind].fill_timecard()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 0:
+                    clear()
+                    break
+        
+        if selection == 6:
             clear()
-            if i.usertype == "vendor":
-                vendor_list.append(i)
-                vendor_names.append(i.username)
-        count = 0
+            treasurer_list = []
+            treasurer_names = []
 
-        if vendor_names == []:
+            for i in userlist:
                 clear()
-                print("There are no vendors yet!")
-                break
+                if i.usertype == "treasurer":
+                    treasurer_list.append(i)
+                    treasurer_names.append(i.username)
+            count = 0
 
-        for vendor in vendor_names:
-            count += 1
-            print(str(count) + ". " + vendor)
+            if treasurer_names == []:
+                    clear()
+                    print("There are no treasurers yet!")
+                    break
 
-        vendor_ind = int(input("Select an vendor: "))
-        vendor_ind -= 1
+            for treasurer in treasurer_names:
+                count += 1
+                print(str(count) + ". " + treasurer)
 
-        print("Vendor functions: ")
-        while(True):
-            clear()
-            print("1.Print user details\n2.Vendor service\n0.Exit vendor functions")
-            selection1 = int(input("Enter your choice: "))
+            treasurer_ind = int(input("Select an treasurer: "))
+            treasurer_ind -= 1
 
-            if selection1 == 1:
-                vendor_list[vendor_ind].printdetails()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 2:
-                vendor_list[vendor_ind].perform_service()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 0:
+            print("Treasurer functions: ")
+            while(True):
                 clear()
-                break
+                print("1.Print user details\n2.Generate income report\n3.Generate expense report\n4.Generate defaulters list\n0.Exit treasurer functions")
+                selection1 = int(input("Enter your choice: "))
 
-    if selection == 5:
-        clear()
-        employee_list = []
-        employee_names = []
+                if selection1 == 1:
+                    treasurer_list[treasurer_ind].printdetails()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 2:
+                    treasurer_list[treasurer_ind].generate_incomereport()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 3:
+                    treasurer_list[treasurer_ind].generate_expensereport()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 4:
+                    treasurer_list[treasurer_ind].generate_defaulterlist()
+                    print("Press space bar to continue ...")
+                    keyboard.wait(" ")
+                if selection1 == 0:
+                    clear()
+                    break
+                
+        if selection == 0:
+            sys.exit()
 
-        for i in userlist:
-            clear()
-            if i.usertype == "employee":
-                employee_list.append(i)
-                employee_names.append(i.username)
-        count = 0
-
-        if employee_names == []:
-                clear()
-                print("There are no employees yet!")
-                break
-
-        for employee in employee_names:
-            count += 1
-            print(str(count) + ". " + employee)
-
-        employee_ind = int(input("Select an employee: "))
-        employee_ind -= 1
-
-        print("employee functions: ")
-        while(True):
-            clear()
-            print("1.Print user details\n2.Employee payment\n0.Exit employee functions")
-            selection1 = int(input("Enter your choice: "))
-
-            if selection1 == 1:
-                employee_list[employee_ind].printdetails()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 2:
-                employee_list[employee_ind].fill_timecard()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 0:
-                clear()
-                break
-    
-    if selection == 6:
-        clear()
-        treasurer_list = []
-        treasurer_names = []
-
-        for i in userlist:
-            clear()
-            if i.usertype == "treasurer":
-                treasurer_list.append(i)
-                treasurer_names.append(i.username)
-        count = 0
-
-        if treasurer_names == []:
-                clear()
-                print("There are no treasurers yet!")
-                break
-
-        for treasurer in treasurer_names:
-            count += 1
-            print(str(count) + ". " + treasurer)
-
-        treasurer_ind = int(input("Select an treasurer: "))
-        treasurer_ind -= 1
-
-        print("Treasurer functions: ")
-        while(True):
-            clear()
-            print("1.Print user details\n2.Generate income report\n3.Generate expense report\n4.Generate defaulters list\n0.Exit treasurer functions")
-            selection1 = int(input("Enter your choice: "))
-
-            if selection1 == 1:
-                treasurer_list[treasurer_ind].printdetails()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 2:
-                treasurer_list[treasurer_ind].generate_incomereport()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 3:
-                treasurer_list[treasurer_ind].generate_expensereport()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 4:
-                treasurer_list[treasurer_ind].generate_defaulterlist()
-                print("Press space bar to continue ...")
-                keyboard.wait(" ")
-            if selection1 == 0:
-                clear()
-                break
-            
-    if selection == 0:
-        sys.exit()
+if __name__ == "__main__":
+    main()
