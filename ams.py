@@ -214,13 +214,13 @@ class Owner(User):
         c = conn.cursor()
 
         selection = int(input("1.Pay for current month\n2.Pay in advance\nEnter your choice: "))
-        if a_size == "small":
+        if self.apt_size == "small":
             c.execute("SELECT cost FROM apt_det WHERE size = 'small'")
             cost = c.fetchone()
-        if a_size == "medium":
+        if self.apt_size == "medium":
             c.execute("SELECT cost FROM apt_det WHERE size = 'medium'")
             cost = c.fetchone()
-        if a_size == "large":
+        if self.apt_size == "large":
             c.execute("SELECT cost FROM apt_det WHERE size = 'large'")
             cost = c.fetchone()
 
@@ -277,13 +277,13 @@ class Resident(User):
         c = conn.cursor()
 
         selection = int(input("1.Pay for current month\n2.Pay in advance\nEnter your choice: "))
-        if a_size == "small":
+        if self.apt_size == "small":
             c.execute("SELECT cost FROM apt_det WHERE size = 'small'")
             cost = c.fetchone()
-        if a_size == "medium":
+        if self.apt_size == "medium":
             c.execute("SELECT cost FROM apt_det WHERE size = 'medium'")
             cost = c.fetchone()
-        if a_size == "large":
+        if self.apt_size == "large":
             c.execute("SELECT cost FROM apt_det WHERE size = 'large'")
             cost = c.fetchone()
 
